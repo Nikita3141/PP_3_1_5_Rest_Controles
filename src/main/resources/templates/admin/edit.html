@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:method="PUT" th:action="@{/admin/edit/{id}(id=${user.getId()})}" th:object="${user}">
+    <table>
+        <tr>
+            <td>
+                <label for="username">Enter name</label>
+                <input type="text" th:field="*{username}" id="username"/>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="lastname">Enter surname</label>
+                <input type="text" th:field="*{lastname}" id="lastname"/>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="password">Enter password</label>
+                <input type="password" th:field="*{password}" id="password">
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="email">Enter email</label>
+                <input type="text" th:field="*{email}" id="email" required/>
+            </td>
+        </tr>
+        <p>
+            <label>Edit role
+                <input type="checkbox" name="roles"
+                        th:each="role : ${roles}"
+                        th:text="${role.getRoleName()}"
+                        th:value="${role.getId()}"
+                        th:field="*{roles}"
+
+                />
+            </label>
+        </p>
+        <tr>
+            <td>
+                <input type="submit" class="buttonEdit" value="Edit user"/>
+            </td>
+        </tr>
+        <br/>
+        <br/>
+        <br/>
+
+        <form th:method="POST" th:action="@{/logout}">
+            <input type="submit" value="Logout"/>
+        </form>
+
+    </table>
+</form>
+</body>
+</html>
