@@ -27,6 +27,12 @@ public class User implements UserDetails {
     @Column (name = "lastname")
     private String lastname;
 
+//    @Column(name = "login")
+//    private String login = "Kial";
+//
+//    @Column(name = "age")
+//    private int age =20;
+
     @Column (name = "password")
     private String password;
 
@@ -76,6 +82,22 @@ public class User implements UserDetails {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+
+//    public int getAge() {
+//        return age;
+//    }
+//
+//    public void setAge(int age) {
+//        this.age = age;
+//    }
+//
+//    public String getLogin() {
+//        return login;
+//    }
+//
+//    public void setLogin(String login) {
+//        this.login = login;
+//    }
 
     public String getPassword() {
         return password;

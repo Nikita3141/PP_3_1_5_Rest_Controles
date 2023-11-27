@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,16 +30,20 @@ public class AdminControllers {
     }
 
     @GetMapping("/users")
-    public String adminPage(Model model) {
+    public String adminPage( Model model, Principal principal ) {
+        User user = userService.findByUsername(principal.getName());
         model.addAttribute("users", userService.findAll());
+        model.addAttribute("roles", roleService.getAllRole());
+        model.addAttribute("user", user);
         return "admin/read";
     }
+
     @GetMapping("/new")
     public String newUser (@ModelAttribute("user")User user, Model model){
         model.addAttribute("roles",roleService.getRole());
         return "admin/create";
     }
-    @PostMapping("/new")
+    @PostMapping("/add")
     public String create (@ModelAttribute("user") User user){
         userService.save(user);
         return "redirect:/admin/users";
@@ -48,18 +53,16 @@ public class AdminControllers {
         userService.delete(id);
         return "redirect:/admin/users";
     }
-    @GetMapping("/edit/{id}")
-    public String getUserEditForm(@PathVariable("id") Long id, Model model) {
-        User userById = userService.findById(id);
-        model.addAttribute("user", userById);
-        model.addAttribute("roles", roleService.getRole());
-        return "admin/edit";
-    }
     @PutMapping("/edit/{id}")
-    public String updateUser(@ModelAttribute("user") User user) {
+    public String getUserEditForm(@ModelAttribute("user") User user, Model model) {
         userService.save(user);
         return "redirect:/admin/users";
     }
+//    @PutMapping("/edit/{id}")
+//    public String updateUser(@ModelAttribute("user") User user) {
+//        userService.save(user);
+//        return "redirect:/admin/users";
+//    }
 
 
 }
