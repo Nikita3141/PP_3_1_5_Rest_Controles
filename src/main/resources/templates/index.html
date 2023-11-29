@@ -2,9 +2,146 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Spring Security Example</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+          crossorigin="anonymous">
 </head>
 <body>
-<h1>Welcome to Index PAGE!</h1>
+
+<table class="usersTable table table-striped bg-white">
+    <thead>
+    <tr>
+        <th  th:width="50">Id</th>
+        <th  th:width="120">Name</th>
+        <th  th:width="120">Surname</th>
+        <th  th:width="150">Email</th>
+        <th  th:width="150">Role</th>
+        <th  th:width="50">Edit</th>
+        <th  th:width="50">Delete</th>
+    </tr>
+    </thead>
+    <tbody >
+    <tr th:each="user : ${users}" >
+
+        <td th:utext="${user.getId()}">id</td>
+        <td th:utext="${user.getUsername()}">Name</td>
+        <td th:utext="${user.getLastname()}">Surname</td>
+        <td th:utext="${user.getEmail()}">Email</td>
+        <td th:text="${user.roles}"></td>
+        <td>
+            <a type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+               data-bs-target="#editModal" th:data-bs-target="${'#editModal'+user.id}">Edit</a>
+        </td>
+        <td>
+            <a type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+               data-bs-target="#DELETE" th:data-bs-target="${'#DELETE'+user.id}">Delete</a>
+        </td>
+        <div class="modal fade" th:id="${'DELETE'+user.id}"
+             aria-labelledby="exampleModalLabel" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <form th:method="Delete" th:action="@{/admin/delete/{id}(id=${user.getId()})}" th:object="${user}">
+                        <div class="modal-body col-md text-center ">
+
+                            <label for="id1"><br>ID<br></label>
+                            <input th:name="id" th:type="text"
+                                   class="form-control" id="id1" th:value="${user.getId()}" disabled>
+
+                            <label for="username1"><br>Name<br></label>
+                            <input th:name="username" th:type="text"
+                                   class="form-control" id="username1"
+                                   th:value="${user.getUsername()}" disabled>
+
+                            <label for="lastname1"><br>Last name<br></label>
+                            <input th:name="lastname" th:type="text"
+                                   class="form-control" id="lastname1"
+                                   th:value="${user.getLastname()}" disabled>
+
+                            <label for="email1"><br>email<br></label>
+                            <input th:name="email" th:type="text"
+                                   class="form-control" id="email1"
+                                   th:value="${user.email}" disabled>
+                            <br>
+                            <label for="roles1"><b>Role</b></label>
+                            <select multiple class="form-control form-control-sm" id="roles1" name="roles" size="2" disabled>
+                                <option th:each="role : ${roles}"
+                                        th:value="${role.getId()}"
+                                        th:field="*{roles}">
+                                    <th:block th:text="${role.getRoleName()}">
+                                    </th:block>
+                                </option>
+                            </select>
+                            <br>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Delete User</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" th:id="${'editModal'+user.id}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" modal-dialog-centered>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="editModalLabel">Edit User</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form th:method="PUT" th:action="@{/admin/edit/{id}(id=${user.getId()})}" th:object="${user}">
+                        <div class="modal-body col-md text-center">
+                            <br>
+                            <label for="id"><br>ID<br></label>
+                            <input size="8" th:name="id" th:type="text"
+                                   class="form-control" id="id"  th:value="${user.getId()}" disabled>
+                            <br>
+                            <label for="username"><br>Name<br></label>
+                            <input size="8" th:name="username" th:type="text"
+                                   class="form-control" id="username"  th:value="${user.getUsername()}">
+                            <br>
+                            <label for="lastname"><br>Last name<br></label>
+                            <input size="8" th:name="lastname" th:type="text"
+                                   class="form-control" id="lastname"  th:value="${user.getLastname()}">
+                            <br>
+                            <label for="email"><br>email<br></label>
+                            <input size="8" th:name="email" th:type="text"
+                                   class="form-control" id="email"   th:value="${user.email}">
+                            <br>
+                            <label for="password"><br>Password<br></label>
+                            <input size="8" th:name="password" required th:type="text"
+                                   class="form-control"  id="password">
+                            <br>
+                            <label for="roles"><b>Role</b></label>
+                            <select multiple class="form-control form-control-sm" id="roles" name="roles" size="2" required>
+                                <option th:each="role : ${roles}"
+                                        th:value="${role.getId()}"
+                                        th:field="*{roles}">
+                                    <th:block th:text="${role.getRoleName()}">
+                                    </th:block>
+                                </option>
+                            </select>
+                            <br><br>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </tr>
+    </tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
 
 
 </body>

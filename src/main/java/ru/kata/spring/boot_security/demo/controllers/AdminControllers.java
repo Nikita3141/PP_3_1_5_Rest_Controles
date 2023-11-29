@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
@@ -18,7 +19,6 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/admin")
 public class AdminControllers {
-
 
     private UserService userService;
     private RoleService roleService;
@@ -39,30 +39,34 @@ public class AdminControllers {
     }
 
     @GetMapping("/new")
-    public String newUser (@ModelAttribute("user")User user, Model model){
+    public String newUser (@AuthenticationPrincipal User user, Model model){
+        model.addAttribute("user",user);
         model.addAttribute("roles",roleService.getRole());
         return "admin/create";
     }
+
     @PostMapping("/add")
     public String create (@ModelAttribute("user") User user){
         userService.save(user);
         return "redirect:/admin/users";
     }
+
     @DeleteMapping("/delete")
     public String delete (@RequestParam ("id") Long id ){
         userService.delete(id);
         return "redirect:/admin/users";
     }
+
     @PutMapping("/edit/{id}")
     public String getUserEditForm(@ModelAttribute("user") User user, Model model) {
-        userService.save(user);
-        return "redirect:/admin/users";
+            userService.save(user);
+            return "redirect:/admin/users";
     }
+
 //    @PutMapping("/edit/{id}")
 //    public String updateUser(@ModelAttribute("user") User user) {
 //        userService.save(user);
 //        return "redirect:/admin/users";
 //    }
-
 
 }

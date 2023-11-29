@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepositories;
+    private UserRepository userRepositories ;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
