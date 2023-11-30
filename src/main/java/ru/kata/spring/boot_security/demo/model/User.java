@@ -26,23 +26,8 @@ public class User implements UserDetails {
     @Column (name = "lastname")
     private String lastname;
 
-//    @Column(name = "login")
-//    private String login = "Kial";
-//
-//    @Column(name = "age")
-//    private int age =20;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", roles=" + roles +
-                '}';
-    }
+    @Column(name = "age")
+    private int age ;
 
     @Column (name = "password")
     private String password;
@@ -98,21 +83,15 @@ public class User implements UserDetails {
         this.lastname = lastname;
     }
 
-//    public int getAge() {
-//        return age;
-//    }
-//
-//    public void setAge(int age) {
-//        this.age = age;
-//    }
-//
-//    public String getLogin() {
-//        return login;
-//    }
-//
-//    public void setLogin(String login) {
-//        this.login = login;
-//    }
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+
 
     public String getPassword() {
         return password;

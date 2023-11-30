@@ -39,9 +39,10 @@ public class AdminControllers {
     }
 
     @GetMapping("/new")
-    public String newUser (@AuthenticationPrincipal User user, Model model){
+    public String newUser ( Principal principal, Model model){
+        User user = userService.findByUsername(principal.getName());
         model.addAttribute("user",user);
-        model.addAttribute("roles",roleService.getRole());
+        model.addAttribute("roles",roleService.getAllRole());
         return "admin/create";
     }
 
@@ -58,7 +59,7 @@ public class AdminControllers {
     }
 
     @PutMapping("/edit/{id}")
-    public String getUserEditForm(@ModelAttribute("user") User user, Model model) {
+    public String getUserEditForm(@ModelAttribute("user") User user) {
             userService.save(user);
             return "redirect:/admin/users";
     }
