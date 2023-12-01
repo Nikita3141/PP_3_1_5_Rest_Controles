@@ -92,7 +92,7 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title">Delete User</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <form th:method="Delete" th:action="@{/admin/delete(id=${user.getId()})}" th:object="${user}">
                                                         <div class="modal-body offset-md-2 col-md-8 text-center ">
@@ -113,7 +113,8 @@
                                                             <br>
                                                             <label for="age1"><b>Age</b></label>
                                                             <input size="8" th:name="age" th:type="number"
-                                                                   class="form-control" id="age1"  th:value="${user.getAge()}">
+                                                                   class="form-control" id="age1"
+                                                                   th:value="${user.getAge()}" disabled>
                                                             <br>
                                                             <label for="email1"><b>email</b></label>
                                                             <input th:name="email" th:type="text"
