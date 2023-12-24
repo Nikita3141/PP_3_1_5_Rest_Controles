@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+          crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin page</title>
+    <style>
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <p class="navbar-brand text-white">
+             <span class="navbar-text" id="info" ></span>
+        </p>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-dark text-secondary">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="p-0 col-2">
+                <div class="nav flex-column nav-pills pt-4"  role="tablist" aria-orientation="vertical">
+                        <a class="nav-link " href="#adminTable" sec:authorize="hasAuthority('ADMIN')" role="tab"
+                           aria-controls="v-pills-home" id="adminTab" aria-selected="true">Admin</a>
+                        <a class="nav-link " id="userTab" href="#userTable" sec:authorize="(hasAnyAuthority('ADMIN','USER'))"
+                           role="tab"
+                           aria-controls="v-pills-profile" aria-selected="false">User</a>
+
+                </div>
+            </div>
+
+
+
+
+            <div class="col-10 px-0">
+                <div class="container-fluid">
+
+                        <h1 class="m-3 "><b>Admin panel</b></h1>
+
+                    <ul class="nav nav-tabs" sec:authorize="hasAnyAuthority('ADMIN')">
+                        <div  class="nav-item">
+                            <a class="nav-link  " id="tableMable"  type="button" data-tab="#adminTable">Users Table</a>
+                        </div>
+                        <div  class="nav-item" >
+                            <a class="nav-link " type="button"  data-tab="#newUser">New User</a>
+                        </div>
+                    </ul>
+
+                        <div class="tab-content border" id="tabContent">
+
+                        <div class="tab-pane fade"  sec:authorize="hasAnyAuthority('ADMIN')"  id="adminTable">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="m-1">
+                                        <h4>All users</h4>
+                                    </div>
+                                </div>
+                                <div class="card-body " >
+                                    <table class="table table-striped table-hover" id="tableAllUsers">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" th:width="50">Id</th>
+                                            <th scope="col" th:width="120">Name</th>
+                                            <th scope="col" th:width="120">Surname</th>
+                                            <th scope="col" th:width="120">Age</th>
+                                            <th scope="col" th:width="150">Email</th>
+                                            <th scope="col" th:width="150">Role</th>
+                                            <th scope="col" th:width="50">Edit</th>
+                                            <th scope="col" th:width="50">Delete</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="tab-pane fade  " id="userTable">
+                                <div class="card">
+                                    <div class="card-header">
+                                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                                    <div class="navbar-brand">About user</div>
+                                </nav>
+                                    </div>
+                                    <div class="card-body">
+                                    <table class="table table-striped" id="tableUser" >
+                                        <thead>
+                                        <tr>
+                                            <th>UserId</th>
+                                            <th>Username</th>
+                                            <th>Surname</th>
+                                            <th>Age</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane  fade text-center " id="newUser">
+                                <div class="card">
+                                    <div class="card-header">
+                                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                                    <div class="navbar-brand">Add new user</div>
+                                </nav>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="offset-md-4 col-md-4 ">
+                                <form id="addForm">
+
+                                    <div class="form-group">
+                                        <label for="usernameCreate" class="col-form-label">Username</label>
+                                        <input type="text" class="form-control username" id="usernameCreate">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="surnameCreate" class="com-form-label">Surname</label>
+                                        <input type="text" class="form-control" id="surnameCreate">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="ageCreate" class="com-form-label">Age</label>
+                                        <input type="number" max="120" min="0" class="form-control" id="ageCreate">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="emailCreate" class="com-form-label">Email</label>
+                                        <input type="text" class="form-control" id="emailCreate">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="passwordCreate" class="com-form-label">Password</label>
+                                        <input type="password" class="form-control" id="passwordCreate">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="rolesCreate" class="com-form-label">Role:</label>
+                                        <select multiple id="rolesCreate" class="form-control select" size="2">
+                                            <option value="ROLE_USER">USER</option>
+                                            <option value="ROLE_ADMIN">ADMIN</option>
+                                        </select>
+                                    </div>
+                                </form>
+                                <BR>
+                                <div class="p2">
+                                    <button class="btn btn-success" id="addUser" type="submit">Add new user</button>
+                                </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                </div>
+            </div>
+
+
+
+
+    </div>
+<!--        Модальное окно -->
+        <div class="modal fade" tabindex="-1" id="defaultModal" role="dialog" aria-label="someDefaultModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Кумяйт куним</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript"  src="/js/Main.js"></script>
+<script type="text/javascript" src="/js/AdminTable.js"></script>
+<script type="text/javascript" src="/js/deleteUser.js"></script>
+<script type="text/javascript" src="/js/editUser.js"></script>
+<script type="text/javascript"  src="/js/addUser.js"></script>
+</body>
+</html>

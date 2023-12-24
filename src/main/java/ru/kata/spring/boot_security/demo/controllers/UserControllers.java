@@ -12,20 +12,11 @@ import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping
 public class UserControllers {
 
-    private UserService userService;
-
-    @Autowired
-    public void setUserControllers(UserServiceImpl userService){
-        this.userService=userService;
-    }
-
-    @GetMapping("/user")
-    public String showUserInfo (Model model, Principal principal){
-        User user = userService.findByUsername(principal.getName());
-        model.addAttribute("user",user);
-        return "user/user";
+    @GetMapping("/")
+    public String showUserInfo (){
+        return "user/Admin";
     }
 }

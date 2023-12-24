@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GeneratorType;
@@ -8,6 +10,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.util.*;
 
@@ -19,22 +23,25 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotEmpty(message = "Username cannot be empty")
     @Column (name = "username")
     private String username;
 
     @Column (name = "lastname")
     private String lastname;
 
+    @Min(value = 0, message = "from 0 to 120")
+    @Max(value = 120, message = "from 0 to 120")
     @Column(name = "age")
     private int age ;
-
+    @NotEmpty(message = "Password cannot be empty")
     @Column (name = "password")
     private String password;
 
     @Column (name = "email")
     private String email;
 
+    @NotEmpty(message = "Roles cannot by empty")
     @ManyToMany(fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     @JoinTable(name ="users_roles",
