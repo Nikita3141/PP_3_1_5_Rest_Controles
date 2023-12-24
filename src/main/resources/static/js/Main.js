@@ -18,7 +18,7 @@ let isUser = true;
 const userFetch = {
     head: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json', // Fix the typo here
+        'Content-Type': 'application/json',
         'Referer': null
     },
     findUserByUserName : async () => await fetch('/admin/userThis'),
